@@ -1,11 +1,16 @@
 import { Component } from '@angular/core';
+import { LayoutService } from '../service/layout.service';
 
 @Component({
     standalone: true,
     selector: 'app-footer',
     template: `<div class="layout-footer">
-        SAKAI by
-        <a href="https://primeng.org" target="_blank" rel="noopener noreferrer" class="text-primary font-bold hover:underline">PrimeNG</a>
+        Onboarding App by
+        <a href="https://www.intechnity.com/" target="_blank" pTooltip="Intechnity sp. z o.o." tooltipPosition="top" class="w-auto">
+            <img src="assets/images/{{ layoutService._config.darkTheme ? 'intechnity-light' : 'intechnity-dark' }}.png" alt="Logo" class="h-[2rem]"
+        /></a>
     </div>`
 })
-export class AppFooter {}
+export class AppFooter {
+    constructor(public layoutService: LayoutService) {}
+}
