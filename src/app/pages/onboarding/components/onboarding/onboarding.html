@@ -17,9 +17,9 @@
     </div>
 
     <div class="w-4/5 bg-white p-6">
-        <ng-container *ngIf="selectedNode">
+        <ng-container *ngIf="selectedNode.data">
             <h1 class="text-2xl font-bold mb-4">{{selectedNode.label}}</h1>
-            <p-editor [readonly]="!editMode" [(ngModel)]="selectedNode.data"  (ngModelChange)="updateNode()" />
+            <p-editor [readonly]="!editMode" [(ngModel)]="selectedNode.data.text"  (ngModelChange)="updateNode()" />
             <!-- <p-button label="Save" icon="pi pi-save" (click)="updateNode()" class="mb-2" /> -->
         </ng-container>
     </div>

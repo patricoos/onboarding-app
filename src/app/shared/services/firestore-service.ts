@@ -24,7 +24,10 @@ export class FirestoreService {
             expanded: true,
             id: crypto.randomUUID(),
             children: [],
-            parentId
+            parentId,
+            data : {
+                text: label
+            }
         };
         return addDoc(this.menuCol, newNode).then(() => {});
     }
@@ -48,7 +51,5 @@ export interface OnboardingTreeNodeModel extends TreeNode<OnboardingModel> {
 }
 
 export interface OnboardingModel {
-    id: string;
-    title: string;
     text: string;
 }
