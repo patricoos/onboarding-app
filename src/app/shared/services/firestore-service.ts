@@ -29,6 +29,7 @@ export class FirestoreService {
                 text: label,
                 videos: [],
                 questions: [],
+                qa: [],
                 files: []
             }
         };
@@ -58,6 +59,7 @@ export interface OnboardingModel {
     files: OnboardingFileModel[];
     videos: any[];
     questions: any[];
+    qa: any[];
 }
 
 export interface OnboardingFileModel {
