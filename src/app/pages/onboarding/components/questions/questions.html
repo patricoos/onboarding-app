@@ -5,7 +5,6 @@
 
     <div *ngFor="let opt of question.options; let io = index; trackBy: trackByOptionId" class="p-inputgroup mb-2">
 
-      <!-- Correct answer radio (bound to option.id) -->
       <p-radioButton
         name="correctAnswer{{i}}"
         [value]="opt.id"
@@ -14,20 +13,19 @@
         (ngModelChange)="updateNode()"
       ></p-radioButton>
 
-      <!-- Option text -->
       <input
         pInputText
         [(ngModel)]="opt.value"
         placeholder="Option {{ io + 1 }}"
         (ngModelChange)="updateNode()"
+        class="w-[88%]"
       />
 
-      <!-- Delete button -->
       <button
         *ngIf="question.options.length > 2"
         pButton
         icon="pi pi-trash"
-        class="p-button-danger"
+        class="p-button-danger ml-2"
          severity="danger"
         (click)="removeOption(question, io)">
       </button>
