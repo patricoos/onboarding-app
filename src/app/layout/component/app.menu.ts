@@ -22,7 +22,7 @@ export class AppMenu {
         this.model = [
             {
                 label: 'User Menu',
-                items: [{ label: 'Onboarding', icon: 'pi pi-fw pi-home', routerLink: ['/'] }],
+                items: [{ label: 'My Onboarding', icon: 'pi pi-fw pi-home', routerLink: ['/'] }],
             },
              {
                 label: 'HR Menu',

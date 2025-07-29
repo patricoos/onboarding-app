@@ -53,10 +53,25 @@ export class Onboarding implements OnInit {
     labelInput = '';
     editingNode: OnboardingTreeNodeModel | null = null;
     parentNode: OnboardingTreeNodeModel | null = null;
+    userId: string;
+    userData: any;
+
+    constructor() {
+        const USER_ID_KEY = 'userId';
+        this.userId = localStorage.getItem(USER_ID_KEY)!;
+
+        if (!this.userId) {
+            this.userId = crypto.randomUUID();
+            localStorage.setItem(USER_ID_KEY, this.userId);
+            console.log('Generated new userId:', this.userId);
+        } else {
+            console.log('Existing userId:', this.userId);
+        }
+    }
 
     ngOnInit() {
         this.editMode = this.router.url.includes('management');
-        
+
         this.firestoreService.getOnboardingTree().subscribe({
             next: (data) => {
                 this.nodes = this.buildTree(data);
@@ -66,6 +81,26 @@ export class Onboarding implements OnInit {
             },
             error: (error) => console.error(error)
         });
+
+        if (!this.editMode) {
+            this.firestoreService.getUserById(this.userId).subscribe({
+                next: (data) => {
+                    if (data) {
+                        this.userData = data;
+                        this.nodes = this.buildTree(data.children as any);
+                        if (!this.selectedNode && this.nodes.find((x) => x)) {
+                            this.selectedNode = this.nodes.find((x) => x) as OnboardingTreeNodeModel;
+                        } else {
+                            this.firestoreService.addMyOnboardingNode(this.userId, this.nodes).subscribe({
+                                next: (data) => {},
+                                error: (error) => console.error(error)
+                            });
+                        }
+                    }
+                },
+                error: (error) => console.error(error)
+            });
+        }
     }
 
     showAddDialog(setselectedNodeAsNull = false) {
@@ -84,6 +119,10 @@ export class Onboarding implements OnInit {
     }
 
     async saveNode() {
+        if (this.editMode) {
+            await this.firestoreService.updateMyOnboardingNode(this.userId, {...this.userData, children: this.nodes});
+            return;
+        }
         const label = this.labelInput.trim();
         if (!label) return;
 
