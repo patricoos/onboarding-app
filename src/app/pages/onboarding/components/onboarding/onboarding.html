@@ -1,3 +1,22 @@
+<!-- <div class="card" *ngIf="!editMode">
+    <form #userForm="ngForm">
+        <div>
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" [(ngModel)]="user.firstName"  (ngModelChange)="updateNode()" required />
+        </div>
+
+        <div>
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" [(ngModel)]="user.lastName"  (ngModelChange)="updateNode()" required />
+        </div>
+
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" [(ngModel)]="user.email"  (ngModelChange)="updateNode()" required email />
+        </div>
+    </form>
+</div> -->
+
 <div class="flex gap-x-4">
     <div class="w-1/5 bg-white p-4">
         <h2 class="text-xl font-semibold mb-4">Onboarding</h2>

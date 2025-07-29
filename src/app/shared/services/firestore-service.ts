@@ -1,8 +1,8 @@
 // firestore.service.ts
 import { inject, Injectable } from '@angular/core';
-import { CollectionReference, DocumentData, Firestore, addDoc, collection, collectionData, deleteDoc, doc, docData, setDoc } from '@angular/fire/firestore';
+import { CollectionReference, DocumentData, DocumentReference, Firestore, addDoc, collection, collectionData, deleteDoc, doc, docData, getDoc, setDoc } from '@angular/fire/firestore';
 import { TreeNode } from 'primeng/api';
-import { from, map, Observable } from 'rxjs';
+import { catchError, from, map, Observable, of, shareReplay, switchMap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class FirestoreService {
@@ -24,15 +24,30 @@ export class FirestoreService {
     }
 
     updateMyOnboardingNode(userId: string, node: OnboardingTreeNodeModel): Promise<void> {
-        return setDoc(doc(this.firestore, 'onboarded',userId), node);
+        return setDoc(doc(this.firestore, 'onboarded', userId), node);
     }
 
-    getUserById(userId: string): Observable<MyOnboardingTreeNodeModel> {
+    getUserById(userId: string): Observable<MyOnboardingTreeNodeModel | null> {
+        console.log(userId);
         const userDocRef = doc(this.firestore, `onboarded/${userId}`);
-        return docData(userDocRef, { idField: 'id' }) as Observable<MyOnboardingTreeNodeModel>;
+
+        return docData(userDocRef, { idField: 'id' }).pipe(
+            catchError((error) => {
+                console.error('Failed to fetch user:', error);
+                return of(null); // or you can throwError if you want to propagate it
+            })
+        ) as Observable<MyOnboardingTreeNodeModel | null>;
     }
 
-    addMyOnboardingNode(id: string, nodes: OnboardingTreeNodeModel[]): Observable<void> {
+getUserByIdFromList(userId: string): Observable<MyOnboardingTreeNodeModel | undefined> {
+  return collectionData<MyOnboardingTreeNodeModel>(this.onboarder, { idField: 'id' }).pipe(
+    map((items) => items.find(item => item.id === userId)),
+    shareReplay(1)
+  );
+}
+
+
+    addMyOnboardingNode(id: string, nodes: OnboardingTreeNodeModel[]): Promise<DocumentReference<MyOnboardingTreeNodeModel, DocumentData>> {
         const newNode: MyOnboardingTreeNodeModel = {
             label: '',
             expanded: true,
@@ -45,7 +60,7 @@ export class FirestoreService {
             }
         };
 
-        return from(addDoc(this.onboarder, newNode).then(() => {}));
+        return addDoc(this.onboarder, newNode);
     }
 
     addOnboardingNode(label: string, index: number, parentId: string | null = null): Promise<void> {

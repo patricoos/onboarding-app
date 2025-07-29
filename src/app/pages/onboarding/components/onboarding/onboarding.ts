@@ -16,6 +16,7 @@ import { FirestorageService } from '@/shared/services/firestorage-service';
 import { Questions } from '../questions/questions';
 import { QuestionsAndAnswers } from '../questions-and-answers/questions-and-answers';
 import { Router } from '@angular/router';
+import { take } from 'rxjs';
 
 @Component({
     selector: 'app-onboarding',
@@ -54,7 +55,7 @@ export class Onboarding implements OnInit {
     editingNode: OnboardingTreeNodeModel | null = null;
     parentNode: OnboardingTreeNodeModel | null = null;
     userId: string;
-    userData: any;
+    user = {firstName: '', lastName: '', email: ''};
 
     constructor() {
         const USER_ID_KEY = 'userId';
@@ -72,35 +73,80 @@ export class Onboarding implements OnInit {
     ngOnInit() {
         this.editMode = this.router.url.includes('management');
 
-        this.firestoreService.getOnboardingTree().subscribe({
-            next: (data) => {
-                this.nodes = this.buildTree(data);
-                if (!this.selectedNode && this.nodes.find((x) => x)) {
-                    this.selectedNode = this.nodes.find((x) => x) as OnboardingTreeNodeModel;
-                }
-            },
-            error: (error) => console.error(error)
-        });
-
-        if (!this.editMode) {
-            this.firestoreService.getUserById(this.userId).subscribe({
+        // if (this.editMode) {
+            this.firestoreService.getOnboardingTree().subscribe({
                 next: (data) => {
-                    if (data) {
-                        this.userData = data;
-                        this.nodes = this.buildTree(data.children as any);
-                        if (!this.selectedNode && this.nodes.find((x) => x)) {
-                            this.selectedNode = this.nodes.find((x) => x) as OnboardingTreeNodeModel;
-                        } else {
-                            this.firestoreService.addMyOnboardingNode(this.userId, this.nodes).subscribe({
-                                next: (data) => {},
-                                error: (error) => console.error(error)
-                            });
-                        }
+                    this.nodes = this.buildTree(data);
+
+                    if (!this.selectedNode && this.nodes.find((x) => x)) {
+                        this.selectedNode = this.nodes.find((x) => x) as OnboardingTreeNodeModel;
                     }
                 },
                 error: (error) => console.error(error)
             });
-        }
+        // } else {
+        //     this.firestoreService
+        //         .getOnboardingTree()
+        //         .pipe(take(1))
+        //         .subscribe({
+        //             next: (data) => {
+        //                 this.nodes = this.buildTree(data);
+
+        //                 if (!this.selectedNode && this.nodes.find((x) => x)) {
+        //                     this.selectedNode = this.nodes.find((x) => x) as OnboardingTreeNodeModel;
+        //                 }
+        //             },
+        //             error: (error) => console.error(error)
+        //         });
+
+        //     setTimeout(() => {
+        //         this.firestoreService.getUserByIdFromList(this.userId).subscribe({
+        //             next: (user) => {
+        //                 console.log(user);
+
+        //                 if (!user) {
+        //                     console.log({ ...this.userData, children: this.nodes });
+        //                     const nodes = removeUndefinedDeep(this.nodes);
+        //                     console.log(nodes);
+
+        //                     this.firestoreService
+        //                         .addMyOnboardingNode(this.userId, { id: this.userId, ...this.userData, children: nodes })
+        //                         .then(() => {
+        //                             console.log('added', this.userId);
+        //                         })
+        //                         .catch((error) => {
+        //                             console.error('Error:', error);
+        //                         });
+        //                 } else {
+        //                     console.log('get');
+
+        //                     this.getUser();
+        //                 }
+        //             }
+        //         });
+        //     }, 1000);
+        // }
+    }
+
+    getUser() {
+        this.firestoreService.getUserById(this.userId).subscribe({
+            next: (data) => {
+                if (data?.children) {
+                    console.log(data);
+
+                    // this.user = data;
+                    this.nodes = this.buildTree(data.children as any);
+                    if (!this.selectedNode && this.nodes.find((x) => x)) {
+                        this.selectedNode = this.nodes.find((x) => x) as OnboardingTreeNodeModel;
+                    }
+                } else {
+                    this.updateNode();
+                }
+            },
+            error: (error) => {
+                console.log('errorr', this.userId);
+            }
+        });
     }
 
     showAddDialog(setselectedNodeAsNull = false) {
@@ -119,10 +165,10 @@ export class Onboarding implements OnInit {
     }
 
     async saveNode() {
-        if (this.editMode) {
-            await this.firestoreService.updateMyOnboardingNode(this.userId, {...this.userData, children: this.nodes});
-            return;
-        }
+        // if (!this.editMode) {
+        //     await this.firestoreService.updateMyOnboardingNode(this.userId, { ...this.user as any, children: this.nodes });
+        //     return;
+        // }
         const label = this.labelInput.trim();
         if (!label) return;
 
@@ -202,4 +248,46 @@ export class Onboarding implements OnInit {
         this.selectedNode.data!.files = this.selectedNode.data!.files.filter((f) => f.id !== file.id);
         await this.updateNode();
     }
+}
+export function removeUndefinedDeep<T>(input: T, seen = new WeakMap()): T {
+    if (input === null || typeof input !== 'object') {
+        return input;
+    }
+
+    // Prevent infinite loop via circular refs
+    if (seen.has(input)) {
+        return seen.get(input);
+    }
+
+    // Prevent cloning non-plain objects (e.g., class instances, Dates, RegExp)
+    const proto = Object.getPrototypeOf(input);
+    const isPlainObject = proto === Object.prototype || proto === null;
+
+    if (Array.isArray(input)) {
+        const cleanedArray: any[] = [];
+        seen.set(input, cleanedArray);
+        for (const item of input) {
+            const cleanedItem = removeUndefinedDeep(item, seen);
+            if (cleanedItem !== undefined) {
+                cleanedArray.push(cleanedItem);
+            }
+        }
+        return cleanedArray as unknown as T;
+    }
+
+    if (isPlainObject) {
+        const cleanedObject: any = {};
+        seen.set(input, cleanedObject);
+        for (const key of Object.keys(input)) {
+            const value = (input as any)[key];
+            const cleanedValue = removeUndefinedDeep(value, seen);
+            if (cleanedValue !== undefined) {
+                cleanedObject[key] = cleanedValue;
+            }
+        }
+        return cleanedObject;
+    }
+
+    // Return as-is for non-plain objects (e.g., Date, RegExp, DOM nodes)
+    return input;
 }
