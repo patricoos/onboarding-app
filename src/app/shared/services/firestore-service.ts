@@ -28,10 +28,12 @@ export class FirestoreService {
         };
         return addDoc(this.menuCol, newNode).then(() => {});
     }
-    
 
     updateOnboardingNode(node: OnboardingTreeNodeModel): Promise<void> {
-        return setDoc(doc(this.firestore, 'onboarding', node.id), node);
+        const copied: OnboardingTreeNodeModel = JSON.parse(JSON.stringify(node));
+        copied.parent = undefined;
+        copied.children = [];
+        return setDoc(doc(this.firestore, 'onboarding', copied.id), copied);
     }
 
     deleteOnboardingNode(node: OnboardingTreeNodeModel): Promise<void> {

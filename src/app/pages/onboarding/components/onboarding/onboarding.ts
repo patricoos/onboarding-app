@@ -46,6 +46,7 @@ export class Onboarding implements OnInit {
         this.firestoreService.getOnboardingTree().subscribe({
             next: (data) => {
                 this.nodes = this.buildTree(data);
+                console.log(data);
             },
             error: (error) => console.error(error)
         });
