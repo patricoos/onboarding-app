@@ -32,7 +32,7 @@
                         <tr>
                             <th>Name</th>
                             <th>Link</th>
-                            <th>Actions</th>
+                            <th *ngIf="editMode">Actions</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-file let-editing="editing">
@@ -45,8 +45,12 @@
                                     <ng-template pTemplate="output">{{ file.name }}</ng-template>
                                 </p-cellEditor>
                             </td>
-                            <td><a [href]="file.url" target="_blank">Download</a></td>
                             <td>
+                                <a [href]="file.url" target="_blank" pTooltip="Download file">
+                                    <i class="pi pi-download"></i>
+                                </a>
+                            </td>
+                            <td *ngIf="editMode">
                                 <button pButton icon="pi pi-trash" (click)="delete(file)" severity="danger"></button>
                             </td>
                         </tr>

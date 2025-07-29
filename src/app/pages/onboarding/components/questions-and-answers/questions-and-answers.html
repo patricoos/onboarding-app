@@ -13,14 +13,16 @@
         [(ngModel)]="question.text"
         placeholder="Enter question text"
         class="mb-2 w-full"
+        [disabled]="!editMode"
         (ngModelChange)="updateNode()" />
 
       <p-editor
         [readonly]="!editMode"
+        [disabled]="!editMode"
         [(ngModel)]="question.value"
         (ngModelChange)="updateNode()">
       </p-editor>
-        <button pButton icon="pi pi-trash" label="Remove Question" class="p-button-danger ml-2" severity="danger" (click)="removeQuestion(i)"></button>
+        <button  *ngIf="editMode" pButton icon="pi pi-trash" label="Remove Question" class="p-button-danger ml-2" severity="danger" (click)="removeQuestion(i)"></button>
 
     </p-accordion-content>
 
@@ -28,5 +30,5 @@
 </p-accordion>
 
 
-    <button pButton label="Add Question" icon="pi pi-check" (click)="addQuestion()"></button>
+    <button pButton  *ngIf="editMode" label="Add Question" icon="pi pi-check" (click)="addQuestion()"></button>
 </div>
