@@ -14,8 +14,6 @@ export class Dashboard implements OnInit {
         this.firestoreService.getUsers().subscribe({
             next: (data) => {
                 this.users = data;
-                console.log(data);
-                
             },
             error: (error) => console.error(error)
         });

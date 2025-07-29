@@ -44,7 +44,6 @@ export class FirestoreService {
     updateOnboardingNode(node: OnboardingTreeNodeModel): Promise<void> {
         node.children = [];
         delete node.parent;
-        console.log(node);
 
         return setDoc(doc(this.firestore, 'onboarding', node.id), node);
     }
