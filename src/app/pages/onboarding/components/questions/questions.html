@@ -1,25 +1,40 @@
 <div class="p-fluid mb-4">
-  <div *ngFor="let question of selectedNode.data?.questions; let i = index" class="p-inputgroup mb-2">
-  <input pInputText [(ngModel)]="question.text" placeholder="Enter question text" class="mb-2" />
+  <div *ngFor="let question of selectedNode.data?.questions; let i = index; trackBy: trackByIndex" class="mb-4">
 
-  <div *ngFor="let opt of question.options; let io = index" class="p-inputgroup mb-2">
-    <p-radioButton
-      name="correct"
-      [value]="i"
-      [(ngModel)]="opt.correctAnswer"
-      class="mr-2"
-    ></p-radioButton>
-    <input pInputText [(ngModel)]="question.options[io]" placeholder="Option {{ i + 1 }}" />
-    <button
-      *ngIf="question.options.length > 2"
-      pButton
-      icon="pi pi-trash"
-      class="p-button-danger"
-      (click)="removeOption(question, io)">
-    </button>
+    <input pInputText [(ngModel)]="question.text" placeholder="Enter question text" class="mb-2 w-full" (ngModelChange)="updateNode()" />
+
+    <div *ngFor="let opt of question.options; let io = index; trackBy: trackByOptionId" class="p-inputgroup mb-2">
+
+      <!-- Correct answer radio (bound to option.id) -->
+      <p-radioButton
+        name="correctAnswer{{i}}"
+        [value]="opt.id"
+        [(ngModel)]="question.correctAnswerId"
+        class="mr-2"
+        (ngModelChange)="updateNode()"
+      ></p-radioButton>
+
+      <!-- Option text -->
+      <input
+        pInputText
+        [(ngModel)]="opt.value"
+        placeholder="Option {{ io + 1 }}"
+        (ngModelChange)="updateNode()"
+      />
+
+      <!-- Delete button -->
+      <button
+        *ngIf="question.options.length > 2"
+        pButton
+        icon="pi pi-trash"
+        class="p-button-danger"
+         severity="danger"
+        (click)="removeOption(question, io)">
+      </button>
+    </div>
+
+    <button pButton label="Add Option" icon="pi pi-plus" (click)="addOption(question)" class="mb-2" ></button>
   </div>
 
-  <button pButton label="Add Option" icon="pi pi-plus" (click)="addOption(question)" class="mb-2"></button>
-  <br />
-</div>
   <button pButton label="Add Question" icon="pi pi-check" (click)="addQuestion()"></button>
+</div>

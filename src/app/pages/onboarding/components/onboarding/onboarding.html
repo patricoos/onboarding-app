@@ -55,7 +55,7 @@
             <ng-container *ngIf="selectedNode?.data?.questions || editMode">
                 <h4 class="text-xl font-semibold mb-4">Questions</h4>
 
-                <app-questions [selectedNode]="selectedNode"/>
+                <app-questions [selectedNode]="selectedNode" (save)="updateNode()"/>
         </ng-container>
         </ng-container>
     </div>

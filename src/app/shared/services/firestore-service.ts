@@ -71,7 +71,12 @@ export interface OnboardingFileModel {
 export interface QuestionModel {
   id: string;
   text: string;
-  options: string[];          
-  correctAnswer: string;     
-  selectedAnswer?: string;    
+  options: OptionModel[];          
+  correctAnswerId: string;     
+  selectedAnswerId?: string;    
+}
+
+export interface OptionModel {
+  id: string;
+  value: string;
 }
