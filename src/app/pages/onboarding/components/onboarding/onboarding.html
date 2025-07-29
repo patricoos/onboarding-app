@@ -52,6 +52,11 @@
                     </ng-template>
                 </p-table>
             </ng-container>
+            <ng-container *ngIf="selectedNode?.data?.questions || editMode">
+                <h4 class="text-xl font-semibold mb-4">Questions</h4>
+
+                <app-questions [selectedNode]="selectedNode"/>
+        </ng-container>
         </ng-container>
     </div>
 </div>
