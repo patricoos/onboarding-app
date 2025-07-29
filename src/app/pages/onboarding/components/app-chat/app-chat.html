@@ -1,0 +1,11 @@
+<h3>Live Chat</h3>
+<p-card header="" styleClass="chat-container">
+    <p-scrollPanel style="height: 300px" class="chat-scroll">
+        <div *ngFor="let msg of messages" class="chat-message"><strong>{{ msg.sender }}:</strong> {{ msg.text }}</div>
+    </p-scrollPanel>
+
+    <div class="chat-input w-full flex">
+        <input type="text" pInputText class="flex-grow" [(ngModel)]="userInput" placeholder="Type your message..." (keydown.enter)="sendMessage()" />
+        <button pButton class="ml-2" icon="pi pi-send" (click)="sendMessage()" label="Send"></button>
+    </div>
+</p-card>

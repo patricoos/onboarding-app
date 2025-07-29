@@ -1,1 +1,21 @@
-<p>users works!</p>
+<div class="card">
+<p-table [value]="users" [paginator]="true" [rows]="5" [responsiveLayout]="'scroll'">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>#</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-user let-i="rowIndex">
+    <tr>
+      <td>{{ i + 1 }}</td>
+      <td>{{ user.firstName }}</td>
+      <td>{{ user.lastName }}</td>
+      <td>{{ user.email }}</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+</div>

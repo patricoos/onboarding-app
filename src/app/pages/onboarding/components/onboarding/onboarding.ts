@@ -17,10 +17,11 @@ import { Questions } from '../questions/questions';
 import { QuestionsAndAnswers } from '../questions-and-answers/questions-and-answers';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
+import { ChatComponent } from '../app-chat/app-chat';
 
 @Component({
     selector: 'app-onboarding',
-    imports: [CommonModule, TreeModule, ContextMenuModule, DialogModule, ButtonModule, FormsModule, InputTextModule, EditorModule, TableModule, FileUploadModule, ButtonModule, InputTextModule, ToastModule, Questions, QuestionsAndAnswers],
+    imports: [ChatComponent, CommonModule, TreeModule, ContextMenuModule, DialogModule, ButtonModule, FormsModule, InputTextModule, EditorModule, TableModule, FileUploadModule, ButtonModule, InputTextModule, ToastModule, Questions, QuestionsAndAnswers],
     providers: [TreeDragDropService],
     templateUrl: './onboarding.html'
 })
