@@ -27,6 +27,7 @@ export class Questions {
             id: crypto.randomUUID(),
             text: '',
             options: [],
+            index: this.selectedNode.data?.questions.length,
             correctAnswerId: ''
         });
         this.updateNode();
@@ -45,7 +46,8 @@ export class Questions {
     addOption(question: QuestionModel) {
         question.options.push({
             id: crypto.randomUUID(),
-            value: ''
+            value: '',
+            index: question.options.length
         });
         this.updateNode();
     }

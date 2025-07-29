@@ -2,9 +2,9 @@ import { FirestoreService, OnboardingFileModel, OnboardingTreeNodeModel } from '
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MenuItem, TreeNode } from 'primeng/api';
+import { MenuItem, TreeDragDropService, TreeNode } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { TreeModule } from 'primeng/tree';
+import { TreeModule, TreeNodeDropEvent } from 'primeng/tree';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -19,6 +19,7 @@ import { QuestionsAndAnswers } from '../questions-and-answers/questions-and-answ
 @Component({
     selector: 'app-onboarding',
     imports: [CommonModule, TreeModule, ContextMenuModule, DialogModule, ButtonModule, FormsModule, InputTextModule, EditorModule, TableModule, FileUploadModule, ButtonModule, InputTextModule, ToastModule, Questions, QuestionsAndAnswers],
+    providers: [TreeDragDropService],
     templateUrl: './onboarding.html'
 })
 export class Onboarding implements OnInit {
@@ -59,13 +60,15 @@ export class Onboarding implements OnInit {
                 if (!this.selectedNode && this.nodes.find((x) => x)) {
                     this.selectedNode = this.nodes.find((x) => x) as OnboardingTreeNodeModel;
                 }
-                console.log(data);
             },
             error: (error) => console.error(error)
         });
     }
 
-    showAddDialog() {
+    showAddDialog(setselectedNodeAsNull = false) {
+        if (setselectedNodeAsNull) {
+            this.selectedNode = null!;
+        }
         this.labelInput = '';
         this.editingNode = null;
         this.dialogVisible = true;
@@ -86,10 +89,17 @@ export class Onboarding implements OnInit {
             await this.firestoreService.updateOnboardingNode(this.editingNode);
         } else {
             const parentId = this.selectedNode?.id ?? null;
-            await this.firestoreService.addOnboardingNode(label, parentId);
+            await this.firestoreService.addOnboardingNode(label, this.selectedNode?.data?.index ?? this.nodes.length, parentId);
         }
 
         this.dialogVisible = false;
+    }
+
+    async onNodeDrop(event: TreeNodeDropEvent) {
+        (event.dragNode as OnboardingTreeNodeModel).data!.index = event.dropNode?.children ? event.dropNode?.children?.length! : event.index! ?? 0;
+        (event.dragNode as OnboardingTreeNodeModel).parentId = (event.dropNode as OnboardingTreeNodeModel).id!;
+        await this.firestoreService.updateOnboardingNode(event.dropNode as OnboardingTreeNodeModel);
+        await this.firestoreService.updateOnboardingNode(event.dragNode as OnboardingTreeNodeModel);
     }
 
     async updateNode() {
@@ -137,7 +147,8 @@ export class Onboarding implements OnInit {
         this.selectedNode.data?.files.push({
             id: fileId,
             name: file.name,
-            url: url
+            url: url,
+            index: this.selectedNode.data?.files.length
         });
         uploader.clear();
         await this.updateNode();

@@ -28,6 +28,7 @@ export class QuestionsAndAnswers {
             id: crypto.randomUUID(),
             text: '',
             value: '',
+            index:this.selectedNode.data?.qa.length
         });
         this.updateNode();
     }
