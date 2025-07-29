@@ -14,12 +14,12 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import { FirestorageService } from '@/shared/services/firestorage-service';
 import { Questions } from '../questions/questions';
+import { QuestionsAndAnswers } from '../questions-and-answers/questions-and-answers';
 
 @Component({
     selector: 'app-onboarding',
-    imports: [CommonModule, TreeModule, ContextMenuModule, DialogModule, ButtonModule, FormsModule, InputTextModule, EditorModule, TableModule, FileUploadModule, ButtonModule, InputTextModule, ToastModule, Questions],
+    imports: [CommonModule, TreeModule, ContextMenuModule, DialogModule, ButtonModule, FormsModule, InputTextModule, EditorModule, TableModule, FileUploadModule, ButtonModule, InputTextModule, ToastModule, Questions, QuestionsAndAnswers],
     templateUrl: './onboarding.html',
-    styleUrl: './onboarding.scss'
 })
 export class Onboarding implements OnInit {
     private firestoreService = inject(FirestoreService);

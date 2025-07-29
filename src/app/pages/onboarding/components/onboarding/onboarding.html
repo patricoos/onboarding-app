@@ -1,7 +1,7 @@
-<div class="flex h-screen gap-x-4">
+<div class="flex gap-x-4">
     <div class="w-1/5 bg-white p-4">
         <h2 class="text-xl font-semibold mb-4">Onboarding</h2>
-        <p-tree [value]="nodes" selectionMode="single" [(selection)]="selectedNode" [contextMenu]="menu" class="min-w-[50vh]"></p-tree>
+        <p-tree [value]="nodes" selectionMode="single" [(selection)]="selectedNode" [contextMenu]="menu" class="min-h-[50vh]"></p-tree>
 
         <p-button *ngIf="editMode" label="Add" icon="pi pi-plus" (click)="showAddDialog()" class="mb-2" />
 
@@ -55,7 +55,13 @@
             <ng-container *ngIf="selectedNode?.data?.questions || editMode">
                 <h4 class="text-xl font-semibold mb-4">Questions</h4>
 
-                <app-questions [selectedNode]="selectedNode" (save)="updateNode()"/>
+                <app-questions [selectedNode]="selectedNode" [editMode]="editMode" (save)="updateNode()"/>
+        </ng-container>
+
+          <ng-container *ngIf="selectedNode?.data?.qa || editMode">
+                <h4 class="text-xl font-semibold mb-4">Questions and Answers</h4>
+
+                <app-questions-and-answers [selectedNode]="selectedNode"  [editMode]="editMode"  (save)="updateNode()"/>
         </ng-container>
         </ng-container>
     </div>

@@ -59,7 +59,7 @@ export interface OnboardingModel {
     files: OnboardingFileModel[];
     videos: any[];
     questions: QuestionModel[];
-    qa: any[];
+    qa: QuestionAndAnwserModel[];
 }
 
 export interface OnboardingFileModel {
@@ -78,5 +78,11 @@ export interface QuestionModel {
 
 export interface OptionModel {
   id: string;
+  value: string;
+}
+
+export interface QuestionAndAnwserModel {
+  id: string;
+  text: string;
   value: string;
 }

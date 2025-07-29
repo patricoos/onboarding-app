@@ -11,10 +11,10 @@ import { CommonModule } from '@angular/common';
     selector: 'app-questions',
     imports: [FormsModule, InputTextModule, ButtonModule, RadioButtonModule, DividerModule, CommonModule],
     templateUrl: './questions.html',
-    styleUrl: './questions.scss'
 })
 export class Questions {
     @Input({ required: true }) selectedNode!: OnboardingTreeNodeModel;
+    @Input({ required: true }) editMode: boolean = true;
     @Output() save: EventEmitter<void> = new EventEmitter();
 
 
