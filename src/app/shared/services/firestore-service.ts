@@ -30,12 +30,11 @@ export class FirestoreService {
     }
 
     updateOnboardingNode(node: OnboardingTreeNodeModel): Promise<void> {
-        const copied: OnboardingTreeNodeModel = JSON.parse(JSON.stringify(node));
-        copied.children = [];
-        delete copied.parent;
-        console.log(copied);
+        node.children = [];
+        delete node.parent;
+        console.log(node);
 
-        return setDoc(doc(this.firestore, 'onboarding', copied.id), copied);
+        return setDoc(doc(this.firestore, 'onboarding', node.id), node);
     }
 
     deleteOnboardingNode(node: OnboardingTreeNodeModel): Promise<void> {

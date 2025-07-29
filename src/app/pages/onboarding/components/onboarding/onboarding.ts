@@ -8,15 +8,18 @@ import { TreeModule } from 'primeng/tree';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
+import { EditorModule } from 'primeng/editor';
 
 @Component({
     selector: 'app-onboarding',
-    imports: [CommonModule, TreeModule, ContextMenuModule, DialogModule, ButtonModule, FormsModule, InputTextModule],
+    imports: [CommonModule, TreeModule, ContextMenuModule, DialogModule, ButtonModule, FormsModule, InputTextModule, EditorModule],
     templateUrl: './onboarding.html',
     styleUrl: './onboarding.scss'
 })
 export class Onboarding implements OnInit {
     private firestoreService = inject(FirestoreService);
+
+    editMode = true;
 
     nodes: OnboardingTreeNodeModel[] = [];
     selectedNode!: OnboardingTreeNodeModel;
@@ -47,6 +50,9 @@ export class Onboarding implements OnInit {
         this.firestoreService.getOnboardingTree().subscribe({
             next: (data) => {
                 this.nodes = this.buildTree(data);
+                if (!this.selectedNode && this.nodes.find((x) => x)) {
+                    this.selectedNode = this.nodes.find((x) => x) as OnboardingTreeNodeModel;
+                }
                 console.log(data);
             },
             error: (error) => console.error(error)
@@ -78,6 +84,12 @@ export class Onboarding implements OnInit {
         }
 
         this.dialogVisible = false;
+    }
+
+    async updateNode() {
+        if (this.selectedNode) {
+            await this.firestoreService.updateOnboardingNode(this.selectedNode);
+        }
     }
 
     async deleteNode() {
