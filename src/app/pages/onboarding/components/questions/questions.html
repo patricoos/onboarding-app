@@ -1,38 +1,18 @@
 <div class="p-fluid mb-4">
-  <div *ngFor="let question of selectedNode.data?.questions; let i = index; trackBy: trackByIndex" class="mb-4">
+    <div *ngFor="let question of selectedNode.data?.questions; let i = index; trackBy: trackByIndex" class="mb-4">
+        <input pInputText [(ngModel)]="question.text" placeholder="Enter question text" class="mb-2 w-full" (ngModelChange)="updateNode()" />
 
-    <input pInputText [(ngModel)]="question.text" placeholder="Enter question text" class="mb-2 w-full" (ngModelChange)="updateNode()" />
+        <div *ngFor="let opt of question.options; let io = index; trackBy: trackByOptionId" class="p-inputgroup mb-2">
+            <p-radioButton name="correctAnswer{{i}}" [value]="opt.id" [(ngModel)]="question.correctAnswerId" class="mr-2" (ngModelChange)="updateNode()"></p-radioButton>
 
-    <div *ngFor="let opt of question.options; let io = index; trackBy: trackByOptionId" class="p-inputgroup mb-2">
+            <input pInputText [(ngModel)]="opt.value" placeholder="Option {{ io + 1 }}" (ngModelChange)="updateNode()" class="w-[88%]" />
 
-      <p-radioButton
-        name="correctAnswer{{i}}"
-        [value]="opt.id"
-        [(ngModel)]="question.correctAnswerId"
-        class="mr-2"
-        (ngModelChange)="updateNode()"
-      ></p-radioButton>
+            <button *ngIf="question.options.length > 2" pButton icon="pi pi-trash" class="p-button-danger ml-2" severity="danger" (click)="removeOption(question, io)"></button>
+        </div>
 
-      <input
-        pInputText
-        [(ngModel)]="opt.value"
-        placeholder="Option {{ io + 1 }}"
-        (ngModelChange)="updateNode()"
-        class="w-[88%]"
-      />
-
-      <button
-        *ngIf="question.options.length > 2"
-        pButton
-        icon="pi pi-trash"
-        class="p-button-danger ml-2"
-         severity="danger"
-        (click)="removeOption(question, io)">
-      </button>
+        <button pButton label="Add Option" icon="pi pi-plus" (click)="addOption(question)" class="mb-2"></button>
+        <button pButton icon="pi pi-trash" label="Remove Question" class="p-button-danger ml-2" severity="danger" (click)="removeQuestion(i)"></button>
     </div>
 
-    <button pButton label="Add Option" icon="pi pi-plus" (click)="addOption(question)" class="mb-2" ></button>
-  </div>
-
-  <button pButton label="Add Question" icon="pi pi-check" (click)="addQuestion()"></button>
+    <button pButton label="Add Question" icon="pi pi-check" (click)="addQuestion()"></button>
 </div>

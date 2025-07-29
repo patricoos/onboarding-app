@@ -20,6 +20,7 @@
         [(ngModel)]="question.value"
         (ngModelChange)="updateNode()">
       </p-editor>
+        <button pButton icon="pi pi-trash" label="Remove Question" class="p-button-danger ml-2" severity="danger" (click)="removeQuestion(i)"></button>
 
     </p-accordion-content>
 

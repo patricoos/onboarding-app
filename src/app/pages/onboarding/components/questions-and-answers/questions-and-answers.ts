@@ -34,7 +34,7 @@ export class QuestionsAndAnswers {
     }
 
     removeQuestion(index: number) {
-        this.selectedNode.data?.questions.splice(index, 1);
+        this.selectedNode.data?.qa.splice(index, 1);
         this.updateNode();
     }
 
