@@ -3,6 +3,7 @@ import { AppLayout } from './app/layout/component/app.layout';
 import { Notfound } from '@/pages/notfound/notfound';
 import { Dashboard } from '@/pages/dashboard/dashboard';
 import { Onboarding } from '@/pages/onboarding/components/onboarding/onboarding';
+import { Users } from '@/pages/onboarding/components/users/users';
 
 export const appRoutes: Routes = [
     {
@@ -12,6 +13,7 @@ export const appRoutes: Routes = [
             // { path: '', component: Dashboard },
             { path: '', component: Onboarding },
             { path: 'management', component: Onboarding },
+            { path: 'users', component: Users },
         ]
     },
     { path: 'notfound', component: Notfound },

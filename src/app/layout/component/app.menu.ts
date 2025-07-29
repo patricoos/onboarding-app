@@ -26,7 +26,10 @@ export class AppMenu {
             },
              {
                 label: 'HR Menu',
-                items: [{ label: 'Onboarding Management', icon: 'pi pi-fw pi-home', routerLink: ['/management'] }],
+                items: [
+                    { label: 'Onboarding Management', icon: 'pi pi-fw pi-home', routerLink: ['/management'] },
+                    { label: 'Onboarded Users', icon: 'pi pi-fw pi-home', routerLink: ['/users'] }
+                ],
             },
             // {
             //     label: 'UI Components',

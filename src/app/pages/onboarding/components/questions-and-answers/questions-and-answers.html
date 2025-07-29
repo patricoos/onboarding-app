@@ -1,34 +1,20 @@
 <div class="p-fluid mb-4">
-<p-accordion [multiple]="true">
-  <p-accordion-panel *ngFor="let question of selectedNode.data?.qa; let i = index" [value]="i">
-    
-    <p-accordion-header>
-      {{ question.text || 'Question ' + (i + 1) }}
-    </p-accordion-header>
+    <p-accordion [multiple]="true">
+        <p-accordion-panel *ngFor="let question of selectedNode.data?.qa; let i = index" [value]="i">
+            <p-accordion-header> {{ question.text || 'Question ' + (i + 1) }} </p-accordion-header>
 
-    <p-accordion-content>
+            <p-accordion-content>
+                <input *ngIf="editMode" pInputText [(ngModel)]="question.text" placeholder="Enter question text" class="mb-2 w-full" [disabled]="!editMode" (ngModelChange)="updateNode()" />
 
-      <input
-        pInputText
-        [(ngModel)]="question.text"
-        placeholder="Enter question text"
-        class="mb-2 w-full"
-        [disabled]="!editMode"
-        (ngModelChange)="updateNode()" />
+                <p-editor *ngIf="editMode; else readolny" [(ngModel)]="question.value" (ngModelChange)="updateNode()"> </p-editor>
 
-      <p-editor
-        [readonly]="!editMode"
-        [disabled]="!editMode"
-        [(ngModel)]="question.value"
-        (ngModelChange)="updateNode()">
-      </p-editor>
-        <button  *ngIf="editMode" pButton icon="pi pi-trash" label="Remove Question" class="p-button-danger ml-2" severity="danger" (click)="removeQuestion(i)"></button>
+                <ng-template #readolny>
+                    <p-editor [readonly]="!editMode" [disabled]="!editMode" class="no-toolbar" [styleClass]="'no-toolbar'" [modules]="{toolbar: false}" [(ngModel)]="question.value"> </p-editor>
+                </ng-template>
+                <button *ngIf="editMode" pButton icon="pi pi-trash" label="Remove Question" class="p-button-danger ml-2" severity="danger" (click)="removeQuestion(i)"></button>
+            </p-accordion-content>
+        </p-accordion-panel>
+    </p-accordion>
 
-    </p-accordion-content>
-
-  </p-accordion-panel>
-</p-accordion>
-
-
-    <button pButton  *ngIf="editMode" label="Add Question" icon="pi pi-check" (click)="addQuestion()"></button>
+    <button pButton *ngIf="editMode" label="Add Question" icon="pi pi-check" (click)="addQuestion()"></button>
 </div>
