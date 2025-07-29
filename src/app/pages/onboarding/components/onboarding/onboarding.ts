@@ -1,4 +1,4 @@
-import { FirestoreService, OnboardingTreeNodeModel } from '@/shared/services/firestore-service';
+import { FirestoreService, OnboardingFileModel, OnboardingTreeNodeModel } from '@/shared/services/firestore-service';
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -9,15 +9,20 @@ import { ContextMenuModule } from 'primeng/contextmenu';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { EditorModule } from 'primeng/editor';
+import { TableModule } from 'primeng/table';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ToastModule } from 'primeng/toast';
+import { FirestorageService } from '@/shared/services/firestorage-service';
 
 @Component({
     selector: 'app-onboarding',
-    imports: [CommonModule, TreeModule, ContextMenuModule, DialogModule, ButtonModule, FormsModule, InputTextModule, EditorModule],
+    imports: [CommonModule, TreeModule, ContextMenuModule, DialogModule, ButtonModule, FormsModule, InputTextModule, EditorModule, TableModule, FileUploadModule, ButtonModule, InputTextModule, ToastModule],
     templateUrl: './onboarding.html',
     styleUrl: './onboarding.scss'
 })
 export class Onboarding implements OnInit {
     private firestoreService = inject(FirestoreService);
+    private firestorageService = inject(FirestorageService);
 
     editMode = true;
 
@@ -121,5 +126,25 @@ export class Onboarding implements OnInit {
         });
 
         return roots;
+    }
+
+    async upload(event: any, uploader: any) {
+        const file: File = event.files[0];
+        const fileId = crypto.randomUUID();
+        const url = await this.firestorageService.uploadFile(fileId, file);
+        this.selectedNode.data?.files.push({
+            id: fileId,
+            name: file.name,
+            url: url
+        });
+        uploader.clear();
+        await this.updateNode();
+    }
+
+    async delete(file: OnboardingFileModel) {
+        const filePath = `uploads/${file.id}-${file.name}`;
+        await this.firestorageService.deleteFile(filePath);
+        this.selectedNode.data!.files = this.selectedNode.data!.files.filter((f) => f.id !== file.id);
+        await this.updateNode();
     }
 }

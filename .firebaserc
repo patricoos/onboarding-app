@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "onboarding-app-b1f53"
-  }
+    "default": "onboarding-app-b1f53",
+    "staging": "onboarding-app-b1f53"
+  },
+  "targets": {},
+  "etags": {}
 }

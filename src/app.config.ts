@@ -8,6 +8,7 @@ import { appRoutes } from './app.routes';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { environment } from './environments/environment';
+import { provideStorage, getStorage } from '@angular/fire/storage';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -15,6 +16,7 @@ export const appConfig: ApplicationConfig = {
         provideHttpClient(withFetch()),
         provideFirebaseApp(() => initializeApp(environment.firebase)),
         provideFirestore(() => getFirestore()),
+        provideStorage(() => getStorage()),
         provideAnimationsAsync(),
         providePrimeNG({ theme: { preset: Aura, options: { darkModeSelector: '.app-dark' } } })
     ]

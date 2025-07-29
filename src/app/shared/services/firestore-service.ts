@@ -55,7 +55,13 @@ export interface OnboardingTreeNodeModel extends TreeNode<OnboardingModel> {
 
 export interface OnboardingModel {
     text: string;
-    files: any[];
+    files: OnboardingFileModel[];
     videos: any[];
     questions: any[];
+}
+
+export interface OnboardingFileModel {
+    id: string;
+    name: string;
+    url: string;
 }

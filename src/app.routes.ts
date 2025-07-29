@@ -9,7 +9,8 @@ export const appRoutes: Routes = [
         path: '',
         component: AppLayout,
         children: [
-            { path: '', component: Dashboard },
+            // { path: '', component: Dashboard },
+            { path: '', component: Onboarding },
             { path: 'onboarding', component: Onboarding },
         ]
     },
