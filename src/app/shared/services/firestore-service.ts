@@ -22,6 +22,8 @@ export class FirestoreService {
         return collectionData<OnboardingTreeNodeModel>(this.menuCol, { idField: 'id' }).pipe(map((nodes) => nodes.sort((a, b) => (a.data?.index ?? 0) - (b.data?.index ?? 0))));
     }
 
+    
+
     addOnboardingNode(label: string, index: number, parentId: string | null = null): Promise<void> {
         const newNode: OnboardingTreeNodeModel = {
             label,

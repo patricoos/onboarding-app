@@ -3,3 +3,10 @@
 @use './layout/layout.scss';
 @use 'primeicons/primeicons.css';
 @use './demo/demo.scss';
+
+.no-toolbar .p-editor-toolbar {
+  display: none !important;
+}
+.no-toolbar .p-editor-content {
+    border: none  !important;
+}
