@@ -26,7 +26,10 @@ export class FirestoreService {
             children: [],
             parentId,
             data : {
-                text: label
+                text: label,
+                videos: [],
+                questions: [],
+                files: []
             }
         };
         return addDoc(this.menuCol, newNode).then(() => {});
@@ -52,4 +55,7 @@ export interface OnboardingTreeNodeModel extends TreeNode<OnboardingModel> {
 
 export interface OnboardingModel {
     text: string;
+    files: any[];
+    videos: any[];
+    questions: any[];
 }
