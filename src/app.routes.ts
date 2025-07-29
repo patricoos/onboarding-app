@@ -11,7 +11,7 @@ export const appRoutes: Routes = [
         children: [
             // { path: '', component: Dashboard },
             { path: '', component: Onboarding },
-            { path: 'onboarding', component: Onboarding },
+            { path: 'management', component: Onboarding },
         ]
     },
     { path: 'notfound', component: Notfound },

@@ -15,6 +15,7 @@ import { ToastModule } from 'primeng/toast';
 import { FirestorageService } from '@/shared/services/firestorage-service';
 import { Questions } from '../questions/questions';
 import { QuestionsAndAnswers } from '../questions-and-answers/questions-and-answers';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-onboarding',
@@ -25,7 +26,7 @@ import { QuestionsAndAnswers } from '../questions-and-answers/questions-and-answ
 export class Onboarding implements OnInit {
     private firestoreService = inject(FirestoreService);
     private firestorageService = inject(FirestorageService);
-
+    private router = inject(Router);
     editMode = true;
 
     nodes: OnboardingTreeNodeModel[] = [];
@@ -54,6 +55,8 @@ export class Onboarding implements OnInit {
     parentNode: OnboardingTreeNodeModel | null = null;
 
     ngOnInit() {
+        this.editMode = this.router.url.includes('management');
+        
         this.firestoreService.getOnboardingTree().subscribe({
             next: (data) => {
                 this.nodes = this.buildTree(data);
@@ -96,7 +99,7 @@ export class Onboarding implements OnInit {
     }
 
     async onNodeDrop(event: TreeNodeDropEvent) {
-        (event.dragNode as OnboardingTreeNodeModel).data!.index = event.dropNode?.children ? event.dropNode?.children?.length! : event.index! ?? 0;
+        (event.dragNode as OnboardingTreeNodeModel).data!.index = event.dropNode?.children ? event.dropNode?.children?.length! : (event.index! ?? 0);
         (event.dragNode as OnboardingTreeNodeModel).parentId = (event.dropNode as OnboardingTreeNodeModel).id!;
         await this.firestoreService.updateOnboardingNode(event.dropNode as OnboardingTreeNodeModel);
         await this.firestoreService.updateOnboardingNode(event.dragNode as OnboardingTreeNodeModel);

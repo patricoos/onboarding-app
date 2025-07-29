@@ -30,7 +30,7 @@ export class FirestoreService {
             children: [],
             parentId,
             data: {
-                text: label,
+                text: '',
                 index: index,
                 videos: [],
                 questions: [],
