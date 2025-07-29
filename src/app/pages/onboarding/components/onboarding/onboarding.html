@@ -8,7 +8,7 @@
         <p-contextMenu #menu [model]="contextMenuItems"></p-contextMenu>
 
         <p-dialog header="{{ editingNode ? 'Edit Node' : 'Add Node' }}" [(visible)]="dialogVisible" [modal]="true" [closable]="false">
-            <input [(ngModel)]="labelInput" type="text" placeholder="Label" class="p-inputtext w-full mb-3" />
+            <input pInputText  [(ngModel)]="labelInput" type="text" placeholder="Label" class="p-inputtext w-full mb-3" />
             <div class="text-right">
                 <p-button pButton label="Save" (click)="saveNode()" class="p-button-sm p-button-primary mr-2" />
                 <p-button pButton label="Cancel" (click)="dialogVisible=false" class="p-button-sm p-button-secondary" />

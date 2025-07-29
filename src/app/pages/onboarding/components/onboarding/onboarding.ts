@@ -7,10 +7,11 @@ import { ButtonModule } from 'primeng/button';
 import { TreeModule } from 'primeng/tree';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
     selector: 'app-onboarding',
-    imports: [CommonModule, TreeModule, ContextMenuModule, DialogModule, ButtonModule, FormsModule],
+    imports: [CommonModule, TreeModule, ContextMenuModule, DialogModule, ButtonModule, FormsModule, InputTextModule],
     templateUrl: './onboarding.html',
     styleUrl: './onboarding.scss'
 })
