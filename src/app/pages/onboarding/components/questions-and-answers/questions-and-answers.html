@@ -1,8 +1,31 @@
 <div class="p-fluid mb-4">
-    <div *ngFor="let question of selectedNode.data?.qa; let i = index; trackBy: trackByIndex" class="mb-4">
-        <input pInputText [(ngModel)]="question.text" placeholder="Enter question text" class="mb-2 w-full" (ngModelChange)="updateNode()" />
-        <p-editor [readonly]="!editMode" [(ngModel)]="question.value" (ngModelChange)="updateNode()" />
-    </div>
+<p-accordion [multiple]="true">
+  <p-accordion-panel *ngFor="let question of selectedNode.data?.qa; let i = index" [value]="i">
+    
+    <p-accordion-header>
+      {{ question.text || 'Question ' + (i + 1) }}
+    </p-accordion-header>
+
+    <p-accordion-content>
+
+      <input
+        pInputText
+        [(ngModel)]="question.text"
+        placeholder="Enter question text"
+        class="mb-2 w-full"
+        (ngModelChange)="updateNode()" />
+
+      <p-editor
+        [readonly]="!editMode"
+        [(ngModel)]="question.value"
+        (ngModelChange)="updateNode()">
+      </p-editor>
+
+    </p-accordion-content>
+
+  </p-accordion-panel>
+</p-accordion>
+
 
     <button pButton label="Add Question" icon="pi pi-check" (click)="addQuestion()"></button>
 </div>

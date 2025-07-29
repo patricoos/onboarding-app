@@ -19,7 +19,7 @@ import { QuestionsAndAnswers } from '../questions-and-answers/questions-and-answ
 @Component({
     selector: 'app-onboarding',
     imports: [CommonModule, TreeModule, ContextMenuModule, DialogModule, ButtonModule, FormsModule, InputTextModule, EditorModule, TableModule, FileUploadModule, ButtonModule, InputTextModule, ToastModule, Questions, QuestionsAndAnswers],
-    templateUrl: './onboarding.html',
+    templateUrl: './onboarding.html'
 })
 export class Onboarding implements OnInit {
     private firestoreService = inject(FirestoreService);
@@ -102,6 +102,7 @@ export class Onboarding implements OnInit {
         if (this.selectedNode?.id) {
             await this.firestoreService.deleteOnboardingNode(this.selectedNode);
         }
+        this.selectedNode = null!;
     }
 
     buildTree(flatNodes: OnboardingTreeNodeModel[]): OnboardingTreeNodeModel[] {

@@ -7,10 +7,11 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { DividerModule } from 'primeng/divider';
 import { CommonModule } from '@angular/common';
 import { EditorModule } from 'primeng/editor';
+import { AccordionModule } from 'primeng/accordion';
 
 @Component({
     selector: 'app-questions-and-answers',
-    imports: [FormsModule, InputTextModule, ButtonModule, RadioButtonModule, DividerModule, CommonModule, EditorModule],
+    imports: [FormsModule, InputTextModule, ButtonModule, RadioButtonModule, DividerModule, CommonModule, EditorModule, AccordionModule ],
     templateUrl: './questions-and-answers.html',
 })
 export class QuestionsAndAnswers {
